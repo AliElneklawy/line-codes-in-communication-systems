@@ -49,4 +49,24 @@ ylabel('Amplitude');
 title('Polar RZ Modulation');
 %----------------- polar RZ ---------------%
 
+%---------- Manschester coding ------------%
+for i = 1:length(seq)
+  if seq(i) == 1
+    y((i-1)*Fs+1:(i-0.5)*Fs) = 1;
+    y((i-0.5)*Fs+1:i*Fs) = -1;
+  else
+    y((i-1)*Fs+1:(i-0.5)*Fs) = -1;
+    y((i-0.5)*Fs+1:i*Fs) = 1;
+  end
+end
+
+
+% Plot the modulated signal
+subplot(6, 1, 3);
+plot(t, y);
+axis([0 t(end) -2.5 2.5]);
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Manschester coding Modulation');
+%---------- Manschester coding ------------%
 
