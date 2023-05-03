@@ -2,7 +2,7 @@ clear all;
 clc;
 
 seq = randi([0 1], 1, 10);
-seq
+
 Tb = 1; % bit duration
 Fs = 100; % sampling frequency in Hz
 
@@ -108,3 +108,9 @@ xlabel('Time (s)');
 ylabel('Amplitude');
 title('3-Level Transmission Modulation');
 %------- 3-level transmission --------%
+
+
+% Add super-title
+seq_str = num2str(seq);
+main_title = sprintf('Sequence: %s', seq_str);
+sgtitle(main_title);
