@@ -63,7 +63,7 @@ axis([0 t(end) -2.5 2.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('Manschester coding Modulation');
-%---------- Manschester coding ------------%
+%--------- Manschester coding --------%
 
 %----------------- AMI ---------------%
 last_bit = 1; % will be used to check if the last 1-bit represented as 1 or -1
@@ -84,7 +84,7 @@ ylabel('Amplitude');
 title('AMI Modulation');
 %----------------- AMI ---------------%
 
-%----------------- 3-level transmission ---------------%
+%------- 3-level transmission --------%
 last_bit = 0;
 alter = [1 0 -1];
 j = 1;
@@ -101,10 +101,10 @@ for i = 1:length(seq)
     end
 end
 
-% Plot the modulated signal
 subplot(6, 1, 5);
 plot(t, y);
 axis([0 t(end) -4 2]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('3-Level Transmission Modulation');
+%------- 3-level transmission --------%
