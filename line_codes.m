@@ -118,11 +118,8 @@ title('3-Level Transmission Modulation');
     if seq(i) == 0
         y((i-1)*Fs+1:i*Fs) = last_bit;
     else
-<<<<<<< Updated upstream
         y((i-1)*Fs+1:i*Fs) = -1 * last_bit;
-=======
         y((i-1)*Fs+1:i*Fs) = last_bit;
->>>>>>> Stashed changes
         last_bit = -1 * last_bit;
     end
  end
