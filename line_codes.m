@@ -86,7 +86,7 @@ title('AMI Modulation');
 
 %------- 3-level transmission --------%
 last_bit = 0;
-alter = [1 0 -1];
+alter = [1 0 -1 0];
 j = 1;
 for i = 1:length(seq)
     if seq(i) == 0
