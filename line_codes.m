@@ -118,7 +118,11 @@ title('3-Level Transmission Modulation');
     if seq(i) == 0
         y((i-1)*Fs+1:i*Fs) = last_bit;
     else
+<<<<<<< Updated upstream
         y((i-1)*Fs+1:i*Fs) = -1 * last_bit;
+=======
+        y((i-1)*Fs+1:i*Fs) = last_bit;
+>>>>>>> Stashed changes
         last_bit = -1 * last_bit;
     end
  end
@@ -145,14 +149,18 @@ P_MAN = a^2 * Tb * (sinc(arg/2)).^2 .* (sin(pi*arg/2)).^2;
 P_AMI = (a^2 / (2*Tb)) * (sinc(2 * pi * arg / Tb)).^2;
 P_3LT = (a^2/Tb) * (0.5 * ((sin(pi*arg)./(pi*arg)).^2) + ...
     ((1./(pi*arg)).^2) .* ((sin(2*pi*arg)./2).^2));
+P_RZ_inv = ((a^2 * Tb) / 2) * (sinc(f * Tb)).^2 .* (1 + cos(pi * f * Tb));
     
 figure(2)
 hold on
-plot(f,P_NRZ,'r')
-plot(f,P_RZ,'g')
-plot(f,P_MAN,'b')
-plot(f,P_AMI,'k')
-plot(f, P_3LT, 'm')
+
+plot(f,P_NRZ,'r', 'LineWidth', 1.5)
+plot(f,P_RZ,'g', 'LineWidth', 1.5)
+plot(f,P_MAN,'b', 'LineWidth', 1.5)
+plot(f,P_AMI,'k', 'LineWidth', 1.5)
+plot(f, P_3LT, 'm', 'LineWidth', 1.5)
+plot(f, P_RZ_inv, 'c', 'LineWidth', 1.5)
+
 grid on
 box on
 xlabel('Frequency')
@@ -160,4 +168,4 @@ ylabel('Power Spectral Density')
 title('PSD for the Line Codes')
 legend('PSD for Polar NRZ Signal','PSD for polar RZ Signal',...
     'PSD for Manchester Signal', 'PSD for AMI',...
-    'PSD for 3-level transmission');
+    'PSD for 3-level transmission', 'PSD for NRZ inverted');
