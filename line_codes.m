@@ -113,16 +113,19 @@ title('3-Level Transmission Modulation');
 %------- 3-level transmission --------%
 
 %--------------- NRZ inverted --------------%
- last_bit = 1 ;
- for i = 1:length(seq)
+ last_bit = 1;
+ i = 1;
+ y((i-1)*Fs+1:i*Fs) = 1;
+ 
+ for i = 2:length(seq)
     if seq(i) == 0
         y((i-1)*Fs+1:i*Fs) = last_bit;
     else
         y((i-1)*Fs+1:i*Fs) = -1 * last_bit;
-        y((i-1)*Fs+1:i*Fs) = last_bit;
         last_bit = -1 * last_bit;
     end
  end
+ 
 subplot(6, 1, 6);
 plot(t, y);
 axis([0 t(end) -2.5 2.5]);
