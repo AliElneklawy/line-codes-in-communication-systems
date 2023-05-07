@@ -145,10 +145,14 @@ sgtitle(main_title);
 arg = f * Tb;
 P_NRZ = (a^2) * Tb * sinc(arg) .* sinc(arg); 
 P_RZ = (a^2 / 2) * ((sinc(arg/2)).* (sinc(arg/2)));
+%P_RZ = (((a ^ 2) * Tb) / 4) * (sinc(arg/2)) .^ 2;
+%P_RZ = (a/2)*(sinc(arg/2) + cos(pi*arg/2).*sinc(arg/2));
 P_MAN = a^2 * Tb * (sinc(arg/2)).^2 .* (sin(pi*arg/2)).^2;
-P_AMI = (a^2 / (2*Tb)) * (sinc(2 * pi * arg / Tb)).^2;
-P_3LT = (a^2/Tb) * (0.5 * ((sin(pi*arg)./(pi*arg)).^2) + ...
-    ((1./(pi*arg)).^2) .* ((sin(2*pi*arg)./2).^2));
+P_AMI = (a^2/Tb)*(sinc(arg)).^2;
+%P_3LT = (a^2/Tb) * (0.5 * ((sin(pi*arg)./(pi*arg)).^2) + ...
+ %   ((1./(pi*arg)).^2) .* ((sin(2*pi*arg)./2).^2));
+P_3LT = ((a^2)*Tb/4)*(sinc(arg/2)).^2 + ((1./(pi*arg)).^2) ...
+    .*((sin(2*pi*arg)/2).^2);
 P_RZ_inv = ((a^2 * Tb) / 2) * (sinc(f * Tb)).^2 .* (1 + cos(pi * f * Tb));
     
 figure(2)
