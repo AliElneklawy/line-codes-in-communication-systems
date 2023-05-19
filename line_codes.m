@@ -1,4 +1,4 @@
-clear all;
+clear;
 clc;
 
 seq = randi([0 1], 1, 10);
@@ -12,7 +12,7 @@ a = 1; % PSD amplitude
 t = linspace(0, Tb*length(seq), length(seq)*Fs+1);
 t = t(1:end-1); % remove the last point to make sure that t and y have
                 % the same length
-
+                
 %----------------- polar NRZ ---------------%
 for i = 1:length(seq)
     if seq(i) == 0
@@ -22,9 +22,10 @@ for i = 1:length(seq)
     end
 end
 
-subplot(6, 1, 1);
+subplot(3, 2, 1);
 plot(t, y);
-axis([0 t(end) -2.5 2.5]);
+grid on
+axis([0 t(end) -1.5 1.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('Polar NRZ Modulation');
@@ -41,9 +42,10 @@ for i = 1:length(seq)
   end
 end
 
-subplot(6, 1, 2);
+subplot(3, 2, 2);
 plot(t, y);
-axis([0 t(end) -2.5 2.5]);
+grid on
+axis([0 t(end) -1.5 1.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('Polar RZ Modulation');
@@ -60,9 +62,10 @@ for i = 1:length(seq)
   end
 end
 
-subplot(6, 1, 3);
+subplot(3, 2, 3);
 plot(t, y);
-axis([0 t(end) -2.5 2.5]);
+grid on
+axis([0 t(end) -1.5 1.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('Manschester coding Modulation');
@@ -70,21 +73,24 @@ title('Manschester coding Modulation');
 
 %----------------- AMI ---------------%
 last_bit = 1; % will be used to check if the last 1-bit represented as 1 or -1
+
 for i = 1:length(seq)
     if seq(i) == 0
         y((i-1)*Fs+1:i*Fs) = 0;
     else
-        y((i-1)*Fs+1:i*Fs) = last_bit;
+        y((i-1)*Fs+1:(i-0.5)*Fs) = last_bit;
+        y((i-0.5)*Fs+1:i*Fs) = 0;
         last_bit = -1 * last_bit;
     end
 end
 
-subplot(6, 1, 4);
+subplot(3, 2, 4);
 plot(t, y);
-axis([0 t(end) -2.5 2.5]);
+grid on
+axis([0 t(end) -1.5 1.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
-title('AMI Modulation');
+title('AMI Modulation (Bipolar Rz)');
 %----------------- AMI ---------------%
 
 %------- 3-level transmission --------%
@@ -104,31 +110,31 @@ for i = 1:length(seq)
     end
 end
 
-subplot(6, 1, 5);
+subplot(3, 2, 5);
 plot(t, y);
-axis([0 t(end) -4 2]);
+grid on
+axis([0 t(end) -1.5 1.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('3-Level Transmission Modulation');
 %------- 3-level transmission --------%
 
 %--------------- NRZ inverted --------------%
- last_bit = 1;
- i = 1;
- y((i-1)*Fs+1:i*Fs) = 1;
+last_bit = 1;
+
+for i = 1:length(seq)
+   if seq(i) == 0
+       y((i-1)*Fs+1:i*Fs) = last_bit;
+   else
+       y((i-1)*Fs+1:i*Fs) = -1 * last_bit;
+       last_bit = -1 * last_bit;
+   end
+end
  
- for i = 2:length(seq)
-    if seq(i) == 0
-        y((i-1)*Fs+1:i*Fs) = last_bit;
-    else
-        y((i-1)*Fs+1:i*Fs) = -1 * last_bit;
-        last_bit = -1 * last_bit;
-    end
- end
- 
-subplot(6, 1, 6);
+subplot(3, 2, 6);
 plot(t, y);
-axis([0 t(end) -2.5 2.5]);
+grid on
+axis([0 t(end) -1.5 1.5]);
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('NRZ inverted Modulation');
@@ -145,14 +151,10 @@ sgtitle(main_title);
 arg = f * Tb;
 P_NRZ = (a^2) * Tb * sinc(arg) .* sinc(arg); 
 P_RZ = (a^2 / 2) * ((sinc(arg/2)).* (sinc(arg/2)));
-%P_RZ = (((a ^ 2) * Tb) / 4) * (sinc(arg/2)) .^ 2;
-%P_RZ = (a/2)*(sinc(arg/2) + cos(pi*arg/2).*sinc(arg/2));
 P_MAN = a^2 * Tb * (sinc(arg/2)).^2 .* (sin(pi*arg/2)).^2;
-P_AMI = (a^2/Tb)*(sinc(arg)).^2;
-%P_3LT = (a^2/Tb) * (0.5 * ((sin(pi*arg)./(pi*arg)).^2) + ...
- %   ((1./(pi*arg)).^2) .* ((sin(2*pi*arg)./2).^2));
+P_AMI = (((a^2) * Tb)/4) * (sinc(arg/2)).^2 .* (sin(pi * arg)).^2;
 P_3LT = ((a^2)*Tb/4)*(sinc(arg/2)).^2 + ((1./(pi*arg)).^2) ...
-    .*((sin(2*pi*arg)/2).^2);
+    .*((sin(2*pi*arg)/2).^2) - ((a^2)*Tb/4)*(sinc(arg)).^2;
 P_RZ_inv = ((a^2 * Tb) / 2) * (sinc(f * Tb)).^2 .* (1 + cos(pi * f * Tb));
     
 figure(2)
@@ -166,7 +168,6 @@ plot(f, P_3LT, 'm', 'LineWidth', 1.5)
 plot(f, P_RZ_inv, 'c', 'LineWidth', 1.5)
 
 grid on
-box on
 xlabel('Frequency')
 ylabel('Power Spectral Density')
 title('PSD for the Line Codes')
