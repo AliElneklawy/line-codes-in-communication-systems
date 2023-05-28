@@ -1,6 +1,6 @@
 clear;
 clc;
-
+ 
 seq = randi([0 1], 1, 10);
 
 Rb = 1; % bit rate
